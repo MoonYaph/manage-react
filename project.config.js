@@ -30,4 +30,8 @@ module.exports = {
     'redux-thunk',
     'react-router-dom',
   ],
+  context: [
+    '/api'
+  ],
+  proxypath: 'http://localhost:8080'
 }

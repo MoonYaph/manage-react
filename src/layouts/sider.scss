@@ -1,0 +1,31 @@
+$logo: #e2c7c0;
+
+.layout {
+  display: flex !important;
+  position: fixed !important;
+  z-index: 999 !important;
+  border: none !important;
+
+  .logo {
+    background-color: $logo;
+    color: $logo;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    padding: 25px;
+    img {
+      max-width: 100%;
+      margin: 5px;
+    }
+  }
+
+  a {
+    color: #333 !important;
+  }
+  .signout {
+    cursor: pointer;
+    border-top: 1px solid rgba(34, 36, 38, 0.15) !important;
+  }
+
+}
+
+

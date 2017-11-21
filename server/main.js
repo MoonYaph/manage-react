@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const webpack = require('webpack')
 const logger = require('../build/lib/logger')
+const proxy = require('http-proxy-middleware')
 const webpackConfig = require('../build/webpack.config')
 const project = require('../project.config')
 const compress = require('compression')
@@ -14,20 +15,28 @@ app.use(compress())
 // ------------------------------------
 if (project.env === 'development') {
   const compiler = webpack(webpackConfig)
-
+  const options = {
+    target: project.proxypath,
+    changeOrigin: true,
+  }
+  app.use(proxy(project.context, options))
   logger.info('Enabling webpack development and HMR middleware')
-  app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath  : webpackConfig.output.publicPath,
-    contentBase : path.resolve(project.basePath, project.srcDir),
-    hot         : true,
-    quiet       : false,
-    noInfo      : false,
-    lazy        : false,
-    stats       : 'normal',
-  }))
-  app.use(require('webpack-hot-middleware')(compiler, {
-    path: '/__webpack_hmr'
-  }))
+  app.use(
+    require('webpack-dev-middleware')(compiler, {
+      publicPath: webpackConfig.output.publicPath,
+      contentBase: path.resolve(project.basePath, project.srcDir),
+      hot: true,
+      quiet: false,
+      noInfo: false,
+      lazy: false,
+      stats: 'normal',
+    }),
+  )
+  app.use(
+    require('webpack-hot-middleware')(compiler, {
+      path: '/__webpack_hmr',
+    }),
+  )
 
   // Serve static assets from ~/public since Webpack is unaware of
   // these files. This middleware doesn't need to be enabled outside
@@ -38,7 +47,7 @@ if (project.env === 'development') {
   // This rewrites all routes requests to the root /index.html file
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.
-  app.use('*', function (req, res, next) {
+  app.use('*', (req, res, next) => {
     const filename = path.join(compiler.outputPath, 'index.html')
     compiler.outputFileSystem.readFile(filename, (err, result) => {
       if (err) {
@@ -52,10 +61,10 @@ if (project.env === 'development') {
 } else {
   logger.warn(
     'Server is being run outside of live development mode, meaning it will ' +
-    'only serve the compiled application bundle in ~/dist. Generally you ' +
-    'do not need an application server for this and can instead use a web ' +
-    'server such as nginx to serve your static files. See the "deployment" ' +
-    'section in the README for more information on deployment strategies.'
+      'only serve the compiled application bundle in ~/dist. Generally you ' +
+      'do not need an application server for this and can instead use a web ' +
+      'server such as nginx to serve your static files. See the "deployment" ' +
+      'section in the README for more information on deployment strategies.',
   )
 
   // Serving ~/dist by default. Ideally these files should be served by

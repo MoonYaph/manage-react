@@ -1,18 +1,17 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
+import 'semantic-ui-css/semantic.min.css'
+
 import app from '../routes'
 import store from '../store'
 
-const App = () => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Route component={app} />
-      </BrowserRouter>
-    </Provider>
-  )
-}
+const App = () => (
+  <Provider store={store}>
+    <BrowserRouter>
+      <Route component={app} />
+    </BrowserRouter>
+  </Provider>
+)
 
 export default App
