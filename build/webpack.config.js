@@ -33,7 +33,15 @@ const config = {
       'node_modules',
     ],
     extensions: ['*', '.js', '.jsx', '.json'],
-
+    alias:{
+      components: `${project.basePath}/src/components`,
+      utils: `${project.basePath}/src/utils`,
+      routes: `${project.basePath}/src/routes`,
+      actions: `${project.basePath}/src/actions`,
+      constants: `${project.basePath}/src/constants`,
+      reducers: `${project.basePath}/src/reducers`,
+      api: `${project.basePath}/src/api`,
+    }
   },
   externals: project.externals,
   module: {
@@ -60,6 +68,7 @@ config.module.rules.push({
       cacheDirectory: true,
       plugins: [
         'babel-plugin-transform-class-properties',
+        ["import", { libraryName: "antd", style: "css" }] ,
         'babel-plugin-syntax-dynamic-import',
         [
           'babel-plugin-transform-runtime',

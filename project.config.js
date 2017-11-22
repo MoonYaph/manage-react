@@ -29,6 +29,8 @@ module.exports = {
     'react-redux',
     'redux-thunk',
     'react-router-dom',
+    'antd',
+    'axios'
   ],
   context: [
     '/api'

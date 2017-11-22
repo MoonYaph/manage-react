@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Switch, Route, Router, withRouter, Redirect } from 'react-router-dom'
 import { AsyncLogin, AsyncHome } from './app'
-import App from '../layouts'
+import App from '../components/layouts'
 
-export const PageLayout = ({ history,isAuthenticated, location }) => (
-  <Router history={history} >
+export const PageLayout = ({ history, isAuthenticated, location }) => (
+  <Router history={history}>
     <App>
       <Switch>
         <Route

@@ -1,96 +1,87 @@
-import React, { Component } from 'react'
-import { Button, Grid, Form,Message } from 'semantic-ui-react'
-import PropTypes from 'prop-types'
-import InlineError from '../messages/InlineError'
+import React from 'react'
 
-class Login extends Component {
-  state = {
-    data: {
-      username: '',
-      password: '',
-    },
-    errors: {},
-    loading: false,
-  }
-  handleChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value },
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import './index.scss'
+
+const FormItem = Form.Item
+
+class LoginForm extends React.Component {
+  handleSubmit = e => {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props
+          .submit(values)
+          .catch(error => message.error(error.response.data.error))
+      }
     })
-  handleSubmit = () => {
-    const errors = this.validate(this.state.data)
-    this.setState({ errors })
-    if (Object.keys(errors).length === 0) {
-      this.setState({ loading: true })
-      this.props
-        .submit(this.state.data)
-        .catch(error =>
-          this.setState({ errors: error.response.data, loading: false }),
-        )
-    }
-  }
-  validate = data => {
-    const errors = {}
-    if (!/^[a-z]{6,12}/.test(data.username)) {
-      errors.username = 'Invalid username'
-    }
-    if (!data.password) {
-      errors.password = "Password can't be blank"
-    }
-    return errors
   }
   render() {
-    const { data, errors, loading } = this.state
+    const { getFieldDecorator } = this.props.form
 
     return (
-      <Grid
-        verticalAlign="middle"
-        centered
-        columns={1}
-        textAlign="center"
-        relaxed
-        stretched
-        style={{ flexGrow: 1, marginTop: '8em' }}
-      >
-        <Grid.Row>
-          <Grid.Column tablet={10} mobile={16} computer={6}>
-            <Form onSubmit={this.handleSubmit} loading={loading}>
-              {errors.error && (
-                <Message negative>
-                  <Message.Header>Something went wrong</Message.Header>
-                  <p>{errors.error}</p>
-                </Message>
-              )}
-              <Form.Input
+      <div className="login-form">
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem>
+            {getFieldDecorator('username', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ],
+            })(
+              <Input
+                prefix={<Icon type="user" style={{ fontSize: 13 }} />}
                 placeholder="Username"
-                name="username"
-                label="Username"
-                value={data.username}
-                onChange={this.handleChange}
-                error={!!errors.username}
-              />
-              {errors.username && <InlineError text={errors.username} />}
-              <Form.Input
-                autoComplete="current-password"
-                placeholder="Password"
+              />,
+            )}
+          </FormItem>
+          <FormItem hasFeedback>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input your Password!',
+                },
+              ],
+            })(
+              <Input
+                prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
                 type="password"
-                name="password"
-                value={data.password}
-                label="Password"
-                onChange={this.handleChange}
-                error={!!errors.password}
-              />
-              {errors.password && <InlineError text={errors.password} />}
-              <div style={{ textAlign: 'center' }}>
-                <Button content="Login" color="teal" icon="sign in" />
-              </div>
-            </Form>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+                placeholder="Password"
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('remember', {
+              valuePropName: 'checked',
+              initialValue: true,
+            })(<Checkbox>Remember me</Checkbox>)}
+            <Link className="login-form-forgot" to="/forgot">
+              Forgot password
+            </Link>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              Log in
+            </Button>
+            Or <Link to="/signup">register now!</Link>
+          </FormItem>
+        </Form>
+      </div>
     )
   }
 }
-Login.propTypes = {
+LoginForm.propTypes = {
+  form: PropTypes.shape({
+    validateFields: PropTypes.func.isRequired,
+    getFieldDecorator: PropTypes.func.isRequired,
+  }).isRequired,
   submit: PropTypes.func.isRequired,
 }
-export default Login
+export default Form.create()(LoginForm)

@@ -1,0 +1,56 @@
+$logo: #e2c7c0;
+
+.layout {
+  display: flex;
+}
+.inline{
+  width: auto;
+}
+.aside{
+  width: 240px;
+  height: 100vh;
+  position: relative;
+  .dark{
+    background-color: #d3bdb0d1;
+    color: #fff;
+  }
+  .logo{
+    padding: 15px;
+    img{
+      max-width: 100%;
+      height: 50px;
+    }
+  }
+  .menu{
+    height: calc(100vh - 85px);
+  }
+  .switch{
+    position: absolute;
+    bottom: 0;
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px 0 24px;
+    overflow: hidden;
+    width: 100%;
+  }
+}
+.main{
+  flex: 1;
+  background-color: #f5f8fa;
+}
+
+.bread{
+  height: 45px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.header-right{
+  display: flex;
+  background-color: #fff;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
