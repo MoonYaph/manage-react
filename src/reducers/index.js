@@ -1,11 +1,14 @@
 import { combineReducers } from 'redux'
 import auth from './auth'
 import app from './app'
+import shop from './shop'
 
-export const makeRootReducer = (asyncReducers) => combineReducers({
+export const makeRootReducer = asyncReducers =>
+  combineReducers({
     auth,
     app,
-    ...asyncReducers
+    shop,
+    ...asyncReducers,
   })
 
 export const injectReducer = (store, { key, reducer }) => {

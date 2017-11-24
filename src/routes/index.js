@@ -2,7 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Switch, Route, Router, withRouter, Redirect } from 'react-router-dom'
-import { AsyncLogin, AsyncHome } from './app'
+import {
+  AsyncLogin,
+  AsyncHome,
+  AsyncUpload,
+  AsyncAddRestaurant,
+  AsyncShop,
+} from './app'
 import App from '../components/layouts'
 
 export const PageLayout = ({ history, isAuthenticated, location }) => (
@@ -13,15 +19,11 @@ export const PageLayout = ({ history, isAuthenticated, location }) => (
           path="/"
           exact
           location={location}
-          render={props =>
-            isAuthenticated ? (
-              <AsyncHome {...props} />
-            ) : (
-              <Redirect to="/login" />
-            )
-          }
+          render={props => <AsyncHome {...props} />}
         />
         <Route path="/login" exact component={AsyncLogin} />
+        <Route path="/upload" exact component={AsyncUpload} />
+        <Route path="/dashboard" exact component={AsyncShop} />
       </Switch>
     </App>
   </Router>

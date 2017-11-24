@@ -39,7 +39,6 @@ const Bread = ({ menu, location }) => {
         name: 'Dashboard',
       },
     )
-
   } else {
     getPathArray(current)
 
@@ -47,6 +46,7 @@ const Bread = ({ menu, location }) => {
     const values = pathToRegexp(current.route, keys).exec(
       location.pathname.replace('#', ''),
     )
+
     if (keys.length) {
       keys.forEach((currentValue, index) => {
         if (typeof currentValue.name !== 'string') {
@@ -85,8 +85,6 @@ const Bread = ({ menu, location }) => {
 }
 Bread.propTypes = {
   menu: PropTypes.arrayOf().isRequired,
-  location: PropTypes.shape({
-
-  }).isRequired,
+  location: PropTypes.shape({}).isRequired,
 }
 export default Bread

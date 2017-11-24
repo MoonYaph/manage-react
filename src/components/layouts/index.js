@@ -5,17 +5,10 @@ import PropTypes from 'prop-types'
 import Sider from './Sider'
 import './sider.scss'
 import Header from './Header'
-import Bread from './Bread';
+import Bread from './Bread'
 
-const App = ({ children, app, dispatch, location }) => {
-  const {
-    menu,
-    siderFold,
-    darkTheme,
-    isNavbar,
-    navOpenKeys,
-    isAuthenticated,
-  } = app
+const App = ({ children, app, dispatch, location, isAuthenticated }) => {
+  const { menu, siderFold, darkTheme, isNavbar, navOpenKeys } = app
 
   const siderProps = {
     menu,
@@ -42,18 +35,22 @@ const App = ({ children, app, dispatch, location }) => {
   }
   return (
     <div className="layout">
-      {!isNavbar ? (
-        <aside className='aside'>
+      {!isNavbar && isAuthenticated ? (
+        <aside className="aside">
           {menu.length === 0 ? null : <Sider {...siderProps} />}
         </aside>
       ) : (
         ''
       )}
       <div className="main">
-        <Header {...headerProps} />
-        <Bread menu={menu} location={location} />
+        {isAuthenticated && (
+          <div>
+            <Header {...headerProps} />
+            <Bread menu={menu} location={location} />
+          </div>
+        )}
         <div className="container">
-          <div className="content">{isAuthenticated ? children : ''}</div>
+          <div className="content">{children}</div>
         </div>
       </div>
     </div>
@@ -64,5 +61,11 @@ App.propTypes = {
   location: PropTypes.shape({}).isRequired,
   app: PropTypes.shape({}).isRequired,
   dispatch: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 }
-export default withRouter(connect(({ app }) => ({ app }))(App))
+const mapStateToProps = state => ({
+  app: state.app,
+  isAuthenticated: !!state.auth.token,
+})
+
+export default withRouter(connect(mapStateToProps)(App))

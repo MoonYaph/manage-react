@@ -20,12 +20,12 @@ const Sider = ({
     navOpenKeys,
     location,
     changeOpenKeys,
-    popover
+    popover,
   }
   return (
-    <div >
-      <div className='logo'>
-        <img alt='logo' src='Logo.png' />
+    <div>
+      <div className="logo">
+        <img alt="logo" src="Logo.png" />
         <span>shouye</span>
       </div>
       <Menus {...menuProps} />

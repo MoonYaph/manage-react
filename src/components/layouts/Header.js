@@ -16,7 +16,7 @@ const Header = () => (
             </span>
           }
         >
-          <Menu.Item key="logout">Sign out</Menu.Item>
+          <Menu.Item key="logout">Log out</Menu.Item>
         </Menu.SubMenu>
       </Menu>
     </div>
