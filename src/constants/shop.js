@@ -1,5 +1,1 @@
-export const SEARCH_DATA = 'SEARCH_DATA'
-export const CREATE_MODAL = 'SEARCH_DATA'
-export const FILTER_CHANGE = 'FILTER_CHANGE'
-export const SHOW_MODAL = 'SHOW_MODAL'
-export const SWITCH_MOTION = 'SWITCH_MOTION'
+export const ADD_CATEGORY = 'ADD_CATEGORY'

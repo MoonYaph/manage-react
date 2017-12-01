@@ -68,7 +68,7 @@ config.module.rules.push({
       cacheDirectory: true,
       plugins: [
         'babel-plugin-transform-class-properties',
-        ["import", { libraryName: "antd", style: "css" }] ,
+        ["import", { libraryName: "antd", style: 'css' }] ,
         'babel-plugin-syntax-dynamic-import',
         [
           'babel-plugin-transform-runtime',
@@ -108,7 +108,7 @@ const extractStyles = new ExtractTextPlugin({
   disable: __DEV__,
 })
 config.module.rules.push({
-  test: /\.(sass|scss|css)$/,
+  test: /\.(less|css)$/,
   loader: extractStyles.extract({
     fallback: 'style-loader',
     use: [
@@ -134,9 +134,16 @@ config.module.rules.push({
         },
       },
       {
-        loader: 'sass-loader',
+        loader: 'postcss-loader',
         options: {
           sourceMap: project.sourcemaps,
+          plugins: [
+            require('postcss-import')({ addDependencyTo: webpack }),
+            require('postcss-url')(),
+            require('postcss-cssnext')(),
+            require('postcss-reporter')(),
+            require('postcss-browser-reporter')({ disabled: __PROD__ }),
+          ],
           includePaths: [
             inProjectSrc('styles'),
           ],

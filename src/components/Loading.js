@@ -1,13 +1,8 @@
 import React from 'react'
+import { Spin } from 'antd'
+
 import { bool } from 'prop-types'
 
-/* eslint-disable */
-const propTypes = {
-  isLoading: bool.isRequired,
-  timedOut: bool.isRequired,
-  pastDelay: bool.isRequired,
-  error: bool
-}
 function Loading(props) {
   if (props.isLoading) {
     // While our other component is loading...
@@ -16,9 +11,7 @@ function Loading(props) {
       return 'Loader timed out!'
     } else if (props.pastDelay) {
       // Display a loading screen after a set delay.
-      return (
-        'err...........'
-      )
+      return <Spin size="large" />
     }
     // Don't flash "Loading..." when we don't need to.
     return null
@@ -30,6 +23,14 @@ function Loading(props) {
   return null
 }
 
-Loading.propTypes = propTypes
+Loading.propTypes = {
+  isLoading: bool.isRequired,
+  timedOut: bool.isRequired,
+  pastDelay: bool.isRequired,
+  error: bool,
+}
+Loading.defaultProps = {
+  error: false,
+}
 
 export default Loading

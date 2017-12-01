@@ -4,18 +4,15 @@ import { Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import { arrayToTree } from 'utils'
 import PropTypes from 'prop-types'
+import menu from '../components/nav'
 
 const { SubMenu, Item } = Menu
 
-const Menus = ({ menu, siderFold, darkTheme }) => {
-  const menuT = arrayToTree(menu, 'id', 'mpid')
+const Menus = ({ siderFold, darkTheme }) => {
   const levelMap = {}
   const getMenu = menuTree =>
     menuTree.map(item => {
       if (item.children) {
-        if (item.mpid) {
-          levelMap[item.id] = item.mpid
-        }
         return (
           <SubMenu
             key={item.id}
@@ -39,7 +36,7 @@ const Menus = ({ menu, siderFold, darkTheme }) => {
         </Item>
       )
     })
-  const menus = getMenu(menuT)
+  const menus = getMenu(menu)
   return (
     <Menu
       mode={siderFold ? 'vertical' : 'inline'}

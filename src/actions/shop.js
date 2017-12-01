@@ -1,33 +1,34 @@
-import {
-  FILTER_CHANGE,
-  SEARCH_DATA,
-  SHOW_MODAL,
-  SWITCH_MOTION,
-} from '../constants/shop'
+import { ADD_CATEGORY } from '../constants/shop'
+import api from '../api'
 
-const filterChange = value => ({
-  type: FILTER_CHANGE,
-  value,
+export const addCategory = category => ({
+  type: ADD_CATEGORY,
+  category,
 })
 
-export const onFilterChange = value => dispatch => dispatch(filterChange(value))
-
-const searchData = ({ field, keyword }) => ({
-  type: SEARCH_DATA,
-  field,
-  keyword,
-})
-
-export const onSearchData = ({ field, keyword }) => dispatch =>
-  keyword.length && dispatch(searchData({ field, keyword }))
-
-const add = () => ({
-  type: SHOW_MODAL,
-})
-export const onAdd = () => dispatch => dispatch(add())
-
-const switchMotion = () => ({
-  type: SWITCH_MOTION,
-})
-
-export const onSwitchMotion = () => dispatch => dispatch(switchMotion())
+export const fetchCategory = () => dispatch => {
+  api.shop.getCategories().then(res => {
+    const data = res
+      .map(item => {
+        if (item.sub_categories.length > 0) {
+          const newData = {
+            value: item.name,
+            label: item.name,
+            children: [],
+          }
+          item.sub_categories.map((value, key) => {
+            if (key === 0) {
+              return false
+            }
+            newData.children.push({
+              value: value.name,
+              label: value.name,
+            })
+          })
+          return newData
+        }
+      })
+      .filter(i => !!i)
+    dispatch(addCategory(data))
+  })
+}

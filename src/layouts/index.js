@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Sider from './Sider'
-import './sider.scss'
 import Header from './Header'
-import Bread from './Bread'
 
-const App = ({ children, app, dispatch, location, isAuthenticated }) => {
+const App = ({ children, app, dispatch, location }) => {
   const { menu, siderFold, darkTheme, isNavbar, navOpenKeys } = app
-
   const siderProps = {
     menu,
     location,
@@ -35,20 +32,13 @@ const App = ({ children, app, dispatch, location, isAuthenticated }) => {
   }
   return (
     <div className="layout">
-      {!isNavbar && isAuthenticated ? (
-        <aside className="aside">
-          {menu.length === 0 ? null : <Sider {...siderProps} />}
-        </aside>
-      ) : (
-        ''
-      )}
+      <aside className="aside">
+        {menu.length === 0 ? null : <Sider {...siderProps} />}
+      </aside>
       <div className="main">
-        {isAuthenticated && (
-          <div>
-            <Header {...headerProps} />
-            <Bread menu={menu} location={location} />
-          </div>
-        )}
+        <div>
+          <Header {...headerProps} />
+        </div>
         <div className="container">
           <div className="content">{children}</div>
         </div>

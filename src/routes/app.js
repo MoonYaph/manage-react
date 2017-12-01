@@ -10,10 +10,10 @@ export const AsyncHome = AsyncLoad({
 export const AsyncUpload = AsyncLoad({
   loader: () => import('../components/forms/Upload.js'),
 })
-export const AsyncAddRestaurant = AsyncLoad({
-  loader: () => import('../components/forms/AddRestaurant.js'),
-})
 
 export const AsyncShop = AsyncLoad({
   loader: () => import('../routes/shop/index.js'),
+})
+export const AsyncAddShop = AsyncLoad({
+  loader: () => import('../components/pages/AddShopPage.js'),
 })

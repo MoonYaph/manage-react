@@ -6,10 +6,10 @@ import {
   AsyncLogin,
   AsyncHome,
   AsyncUpload,
-  AsyncAddRestaurant,
   AsyncShop,
+  AsyncAddShop
 } from './app'
-import App from '../components/layouts'
+import App from '../layouts'
 
 export const PageLayout = ({ history, isAuthenticated, location }) => (
   <Router history={history}>
@@ -18,12 +18,18 @@ export const PageLayout = ({ history, isAuthenticated, location }) => (
         <Route
           path="/"
           exact
-          location={location}
-          render={props => <AsyncHome {...props} />}
+          render={props =>
+            isAuthenticated ? (
+              <AsyncHome {...props} />
+            ) : (
+              <Redirect to="/login" />
+            )
+          }
         />
         <Route path="/login" exact component={AsyncLogin} />
         <Route path="/upload" exact component={AsyncUpload} />
         <Route path="/dashboard" exact component={AsyncShop} />
+        <Route path="/request" exact component={AsyncAddShop} />
       </Switch>
     </App>
   </Router>
@@ -32,10 +38,10 @@ export const PageLayout = ({ history, isAuthenticated, location }) => (
 PageLayout.propTypes = {
   location: PropTypes.shape({}).isRequired,
   history: PropTypes.shape({}).isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 }
 export default withRouter(
   connect(state => ({
-    isAuthenticated: !!state.auth.token,
-  }))(PageLayout),
+    isAuthenticated: !!state.auth.token
+  }))(PageLayout)
 )

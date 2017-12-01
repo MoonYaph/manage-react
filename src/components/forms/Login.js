@@ -3,7 +3,6 @@ import React from 'react'
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import './index.scss'
 
 const FormItem = Form.Item
 

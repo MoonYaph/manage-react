@@ -11,9 +11,24 @@ import {
   Upload,
   Button,
   Icon,
+  message,
 } from 'antd'
 
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 14 },
+  },
+}
+
 class AddRestaurant extends Component {
+  state = {
+    options: ['品牌保证', '蜂鸟专送', '新开店铺', '外卖保', '准时达', '开发票'],
+  }
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
@@ -26,65 +41,8 @@ class AddRestaurant extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 },
-      },
-    }
-    const options = [
-      {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-          {
-            value: 'hangzhou',
-            label: 'Hangzhou',
-            children: [
-              {
-                value: 'xihu',
-                label: 'West Lake',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-          {
-            value: 'nanjing',
-            label: 'Nanjing',
-            children: [
-              {
-                value: 'zhonghuamen',
-                label: 'Zhong Hua Men',
-              },
-            ],
-          },
-        ],
-      },
-    ]
-    const checkboxOptions = [
-      '品牌保证',
-      '蜂鸟专送',
-      '新开店铺',
-      '外卖保',
-      '准时达',
-      '开发票',
-    ]
-    const config = {
-      rules: [
-        { type: 'object', required: true, message: 'Please select time!' },
-      ],
-    }
-    console.info(this.props.location)
+    const { category } = this.props.shop
+    const { options } = this.state
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Item label="店铺" hasFeedback {...formItemLayout}>
@@ -129,7 +87,7 @@ class AddRestaurant extends Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="店铺分类" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('restaurant classify', {
+          {getFieldDecorator('restaurant_classify', {
             rules: [
               {
                 type: 'array',
@@ -137,27 +95,31 @@ class AddRestaurant extends Component {
                 message: 'please choose your classify',
               },
             ],
-          })(<Cascader options={options} />)}
+          })(<Cascader options={category} />)}
         </Form.Item>
         <Form.Item label="店铺特点" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('restaurant attribute')(
-            <Checkbox.Group options={checkboxOptions} />,
+          {getFieldDecorator('restaurant_attribute')(
+            <Checkbox.Group options={options} />,
           )}
         </Form.Item>
         <Form.Item label="配送费" hasFeedback {...formItemLayout}>
-          <InputNumber min={1} defaultValue={5} />
+          {getFieldDecorator('delivery_fee')(<InputNumber min={1} />)}
         </Form.Item>
         <Form.Item label="起送价" hasFeedback {...formItemLayout}>
-          <InputNumber min={1} defaultValue={20} />
+          {getFieldDecorator('delivery_start_fee')(<InputNumber min={1} />)}
         </Form.Item>
         <Form.Item {...formItemLayout} label="营业时间">
-          {getFieldDecorator('time-picker', config)(
-            <TimePicker placeholder="起始时间" />,
+          {getFieldDecorator('start_time')(
+            <TimePicker
+              placeholder="起始时间"
+              hideDisabledOptions
+              disabledSeconds={() => []}
+            />,
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label="上传店铺头像">
-          {getFieldDecorator('avatar')(
-            <Upload name="file" action="/api/upload/" listType="picture">
+          {getFieldDecorator('file')(
+            <Upload name="file" action="/auth/upload/" listType="picture">
               <Button>
                 <Icon type="upload" /> Click to upload
               </Button>
@@ -181,5 +143,9 @@ AddRestaurant.propTypes = {
     getFieldDecorator: PropTypes.func.isRequired,
     validateFields: PropTypes.func.isRequired,
   }).isRequired,
+  shop: PropTypes.shape({
+    category: PropTypes.array.isRequired,
+  }).isRequired,
+  submit: PropTypes.func.isRequired,
 }
 export default Form.create()(AddRestaurant)

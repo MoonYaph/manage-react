@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Menus from './Menu'
+import styles from './sider.less'
 
 const Sider = ({
   siderFold,
@@ -24,9 +25,9 @@ const Sider = ({
   }
   return (
     <div>
-      <div className="logo">
-        <img alt="logo" src="Logo.png" />
-        <span>shouye</span>
+      <div className={styles.logo}>
+        <img alt="logo" src="logo.svg" />
+        <span>Manage Design</span>
       </div>
       <Menus {...menuProps} />
     </div>

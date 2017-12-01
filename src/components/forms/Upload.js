@@ -22,7 +22,7 @@ class UploadFile extends Component {
             valuePropName: 'fileList',
             getValueFromEvent: this.normFile,
           })(
-            <Upload name="file" action="/api/upload/" listType="picture">
+            <Upload name="file" action="/auth/upload/" listType="picture">
               <Button>
                 <Icon type="upload" /> Click to upload
               </Button>

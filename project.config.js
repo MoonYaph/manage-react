@@ -32,8 +32,6 @@ module.exports = {
     'antd',
     'axios'
   ],
-  context: [
-    '/api'
-  ],
+  context: ['/api', '/shop', '/auth'],
   proxypath: 'http://localhost:8080'
 }

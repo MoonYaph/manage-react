@@ -1,25 +1,12 @@
-import { SEARCH_DATA } from '../constants/shop'
+import { ADD_CATEGORY } from '../constants/shop'
 
 const initialState = {
-  currentItem: {},
-  modalVisible: false,
-  modaltype: 'create',
-  selectedRowKeys: [],
-  isMotion: false,
-  list: [],
-  pagination: {
-    showSizeChanger: true,
-    showQuickJumper: true,
-    showTotal: total => `Total ${total} Items`,
-    current: 1,
-    total: 0,
-  },
+  category: [],
 }
-
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SEARCH_DATA:
-      return state
+    case ADD_CATEGORY:
+      return { ...state, category: action.category }
     default:
       return state
   }
